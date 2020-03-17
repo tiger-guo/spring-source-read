@@ -56,28 +56,20 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext for bean-style configuration.
-	 * @see #setConfigLocation
-	 * @see #setConfigLocations
-	 * @see #afterPropertiesSet()
+	 * 为bean样式的配置创建一个新的ClassPathXmlApplicationContext
 	 */
 	public ClassPathXmlApplicationContext() {
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext for bean-style configuration.
-	 * @param parent the parent context
-	 * @see #setConfigLocation
-	 * @see #setConfigLocations
-	 * @see #afterPropertiesSet()
+	 * 如果已经有 ApplicationContext 并需要配置成父子关系，那么调用这个构造方法
 	 */
 	public ClassPathXmlApplicationContext(ApplicationContext parent) {
 		super(parent);
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext, loading the definitions
-	 * from the given XML file and automatically refreshing the context.
+	 * 创建一个新的ClassPathXmlApplicationContext，从给定的XML文件中加载定义，并自动刷新上下文。
 	 * @param configLocation resource location
 	 * @throws BeansException if context creation failed
 	 */
@@ -86,8 +78,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext, loading the definitions
-	 * from the given XML files and automatically refreshing the context.
+	 * 创建一个新的ClassPathXmlApplicationContext，从给定的XML文件中加载定义，并自动刷新上下文。
 	 * @param configLocations array of resource locations
 	 * @throws BeansException if context creation failed
 	 */
@@ -96,9 +87,7 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext with the given parent,
-	 * loading the definitions from the given XML files and automatically
-	 * refreshing the context.
+	 * 创建一个新的ClassPathXmlApplicationContext，从给定的XML文件或 父ApplicationContext 中加载定义，并自动刷新上下文。
 	 * @param configLocations array of resource locations
 	 * @param parent the parent context
 	 * @throws BeansException if context creation failed
@@ -110,12 +99,9 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext, loading the definitions
-	 * from the given XML files.
+	 * 创建一个新的ClassPathXmlApplicationContext
 	 * @param configLocations array of resource locations
-	 * @param refresh whether to automatically refresh the context,
-	 * loading all bean definitions and creating all singletons.
-	 * Alternatively, call refresh manually after further configuring the context.
+	 * @param refresh 是否自动刷新上下文
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
 	 */
@@ -124,12 +110,9 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext with the given parent,
-	 * loading the definitions from the given XML files.
+	 * 创建一个新的ClassPathXmlApplicationContext
 	 * @param configLocations array of resource locations
-	 * @param refresh whether to automatically refresh the context,
-	 * loading all bean definitions and creating all singletons.
-	 * Alternatively, call refresh manually after further configuring the context.
+	 * @param refresh 是否自动刷新上下文
 	 * @param parent the parent context
 	 * @throws BeansException if context creation failed
 	 * @see #refresh()
@@ -147,13 +130,8 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext, loading the definitions
-	 * from the given XML file and automatically refreshing the context.
-	 * <p>This is a convenience method to load class path resources relative to a
-	 * given Class. For full flexibility, consider using a GenericApplicationContext
-	 * with an XmlBeanDefinitionReader and a ClassPathResource argument.
-	 * @param path relative (or absolute) path within the class path
-	 * @param clazz the class to load resources with (basis for the given paths)
+	 * @param path 类路径中的相对（或绝对）路径
+	 * @param clazz 用来加载资源的类（给定路径的基础）
 	 * @throws BeansException if context creation failed
 	 * @see org.springframework.core.io.ClassPathResource#ClassPathResource(String, Class)
 	 * @see org.springframework.context.support.GenericApplicationContext
@@ -164,10 +142,8 @@ public class ClassPathXmlApplicationContext extends AbstractXmlApplicationContex
 	}
 
 	/**
-	 * Create a new ClassPathXmlApplicationContext, loading the definitions
-	 * from the given XML files and automatically refreshing the context.
-	 * @param paths array of relative (or absolute) paths within the class path
-	 * @param clazz the class to load resources with (basis for the given paths)
+	 * @param paths 类路径中的相对（或绝对）路径
+	 * @param clazz 用来加载资源的类（给定路径的基础）
 	 * @throws BeansException if context creation failed
 	 * @see org.springframework.core.io.ClassPathResource#ClassPathResource(String, Class)
 	 * @see org.springframework.context.support.GenericApplicationContext
