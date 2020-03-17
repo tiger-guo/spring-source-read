@@ -195,8 +195,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	}
 
 	/**
-	 * Return the (raw) singleton object registered under the given name,
-	 * creating and registering a new one if none registered yet.
+	 * 1.先从 singletonObjects 集合获取 bean 实例，若不为空，则直接返回
+	 * 2.若为空，进入创建 bean 实例阶段。先将 beanName 添加到 singletonsCurrentlyInCreation
+	 * 3.通过 getObject 方法调用 createBean 方法创建 bean 实例
+	 * 4.将 beanName 从 singletonsCurrentlyInCreation 集合中移除
+	 * 5.将 <beanName, singletonObject> 映射缓存到 singletonObjects 集合中
 	 * @param beanName the name of the bean
 	 * @param singletonFactory the ObjectFactory to lazily create the singleton
 	 * with, if necessary
@@ -205,6 +208,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
 		synchronized (this.singletonObjects) {
+			// 从缓存中查找，查找到直接返回，没有则执行初始化
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
 				if (this.singletonsCurrentlyInDestruction) {
@@ -215,6 +219,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 				if (logger.isDebugEnabled()) {
 					logger.debug("Creating shared instance of singleton bean '" + beanName + "'");
 				}
+
+				// 将beanName添加到 singletonsCurrentlyInCreation 中，表示beanName对应的bean正在创建。
 				beforeSingletonCreation(beanName);
 				boolean newSingleton = false;
 				boolean recordSuppressedExceptions = (this.suppressedExceptions == null);
@@ -222,12 +228,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					// 通过 getObject 方法调用 createBean 方法创建 bean 实例
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
 				catch (IllegalStateException ex) {
-					// Has the singleton object implicitly appeared in the meantime ->
-					// if yes, proceed with it since the exception indicates that state.
 					singletonObject = this.singletonObjects.get(beanName);
 					if (singletonObject == null) {
 						throw ex;
@@ -245,9 +250,14 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (recordSuppressedExceptions) {
 						this.suppressedExceptions = null;
 					}
+					// 将 beanName 从 singletonsCurrentlyInCreation 移除
 					afterSingletonCreation(beanName);
 				}
 				if (newSingleton) {
+					/*
+					 * 将 <beanName, singletonObject> 键值对添加到 singletonObjects 集合中，
+					 * 并从其他集合（比如 earlySingletonObjects）中移除 singletonObject 记录
+					 */
 					addSingleton(beanName, singletonObject);
 				}
 			}
